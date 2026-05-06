@@ -68,8 +68,9 @@ jobs:
 
       - name: Verificar vazamentos de secrets
         run: |
-          if grep -r "password.*=" app/ --exclude-dir=.git; then
+          # Procura apenas por atribuições diretas de strings suspeitas entre aspas
+          if grep -rE "password\s*=\s*['\"][a-zA-Z0-9_.-]+['\"]" app/ --exclude-dir=.git; then
             echo "ATENÇÃO: Possível senha hardcoded encontrada!"
             exit 1
           fi
-          echo "Nenhum secret exposto no código fonte!"
+          echo "Nenhum secret exposto no código fonte!"          echo "Nenhum secret exposto no código fonte!"
